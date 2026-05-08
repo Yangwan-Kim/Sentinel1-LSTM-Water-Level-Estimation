@@ -1,0 +1,23 @@
+### 02_Evaluate_water_body_detection.m
+
+This script demonstrates the evaluation step for Sentinel-1-derived water body detection results. In the associated study, two water body detection approaches were used: K-means clustering and Otsu thresholding.
+
+The K-means-based workflow determines the optimal number of clusters using silhouette analysis and then classifies Sentinel-1 VH and VV backscatter values into water and non-water related groups. The Otsu-based workflow applies automatic thresholding to Sentinel-1 VH and VV backscatter values to separate water and non-water pixels.
+
+In this tutorial repository, the full water body extraction workflow from the original Sentinel-1 GRD imagery is not provided. Instead, the final preprocessed outputs from each method are provided as sample files and used to demonstrate the evaluation procedure.
+
+**Methodological purpose:**
+
+This step illustrates how final water body detection results can be evaluated using confusion matrix-based metrics. In the study, Sentinel-1-derived water body maps from K-means clustering and Otsu thresholding were compared with ESA WorldCover reference water body data after both datasets were binarized into water and non-water classes.
+
+The evaluation metrics include accuracy, precision, recall, false alarm rate (FAR), and F1 score. Accuracy represents the overall agreement between the Sentinel-1-derived water body map and the reference data. Precision indicates the reliability of detected water pixels, recall represents the ability to identify reference water pixels, FAR measures false water detections, and F1 score provides a balanced measure of precision and recall.
+
+This script is provided as a tutorial-style example. It demonstrates the evaluation logic using simplified or preprocessed result values rather than reproducing the full project-specific validation workflow.
+
+**Final preprocessed outputs used in this step:**
+
+- `Data/Sample_Data/Sentinel1_Features_Sample_K_means_Clustering.xlsx` 
+  This file is a final preprocessed output generated from the K-means clustering workflow. It contains sample Sentinel-1-derived water body detection results and feature values, including σ⁰VH, σ⁰VV, incidence angle, water-pixel information, neighborhood backscatter statistics, and the optimal number of clusters.
+
+- `Data/Sample_Data/Sentinel1_Features_Sample_Otsu_Thresholding.xlsx` 
+  This file is a final preprocessed output generated from the Otsu thresholding workflow. It contains sample Sentinel-1-derived water body detection results and feature values extracted after threshold-based water body detection.
