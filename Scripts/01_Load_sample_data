@@ -1,1 +1,16 @@
+### 01_Load_sample_data.m
 
+This script demonstrates the initial data integration step of the tutorial workflow. 
+It loads station metadata, ground-based water level observations, and preprocessed Sentinel-1 SAR-derived feature files.
+
+The station metadata are used to define the spatial information of each monitoring site, 
+including station location, Sentinel-1 clipping range, clipped image size, and the pixel location corresponding to the station. 
+The water level observations are linked using station ID and observation time.
+
+The Sentinel-1 feature files contain preprocessed SAR-derived variables, including σ⁰VH, σ⁰VV, incidence angle, water-pixel information, 
+and neighborhood backscatter statistics extracted using K-means clustering or Otsu thresholding. These files do not include the original Sentinel-1 GRD imagery.
+
+In this step, station ID is used to link spatial information, while date-time information is used to synchronize Sentinel-1 
+acquisition times with the corresponding ground-based water level records. 
+
+The resulting station-specific time series dataset can then be used in the subsequent LSTM-based water level estimation workflow.
