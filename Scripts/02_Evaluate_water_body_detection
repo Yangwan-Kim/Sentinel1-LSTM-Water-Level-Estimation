@@ -1,10 +1,13 @@
 ### 02_Evaluate_water_body_detection.m
 
-This script demonstrates the evaluation step for Sentinel-1-derived water body detection results. In the associated study, two water body detection approaches were used: K-means clustering and Otsu thresholding.
+This script demonstrates the evaluation step for Sentinel-1-derived water body detection results. In the associated study, 
+two water body detection approaches were used: K-means clustering and Otsu thresholding.
 
-The K-means-based workflow determines the optimal number of clusters using silhouette analysis and then classifies Sentinel-1 VH and VV backscatter values into water and non-water related groups. The Otsu-based workflow applies automatic thresholding to Sentinel-1 VH and VV backscatter values to separate water and non-water pixels.
+The K-means-based workflow determines the optimal number of clusters using silhouette analysis and then classifies Sentinel-1 VH and VV backscatter values into water and non-water related groups. 
+The Otsu-based workflow applies automatic thresholding to Sentinel-1 VH and VV backscatter values to separate water and non-water pixels.
 
-In this tutorial repository, the full water body extraction workflow from the original Sentinel-1 GRD imagery is not provided. Instead, the final preprocessed outputs from each method are provided as sample files and used to demonstrate the evaluation procedure.
+In this tutorial repository, the full water body extraction workflow from the original Sentinel-1 GRD imagery is not provided. Instead, 
+the final preprocessed outputs from each method are provided as sample files and used to demonstrate the evaluation procedure.
 
 **Methodological purpose:**
 
