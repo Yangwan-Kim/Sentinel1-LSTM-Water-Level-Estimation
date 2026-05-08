@@ -1,4 +1,4 @@
-%% 02_Evaluate_water_body_detection.m
+%% 02_Evaluate_water_body_detection_Code.m
 % Tutorial script for water body detection and evaluation using Sentinel-1 SAR.
 %
 % Programming environment:
