@@ -1,16 +1,21 @@
 ### 01_Load_sample_data.m
 
-This script demonstrates the initial data integration step of the tutorial workflow. 
-It loads station metadata, ground-based water level observations, and preprocessed Sentinel-1 SAR-derived feature files.
+This script demonstrates the initial data integration step of the tutorial workflow. It loads station metadata, ground-based water level observations, and preprocessed Sentinel-1 SAR-derived feature files, and shows how these datasets are linked using spatial and temporal information.
 
-The station metadata are used to define the spatial information of each monitoring site, 
-including station location, Sentinel-1 clipping range, clipped image size, and the pixel location corresponding to the station. 
-The water level observations are linked using station ID and observation time.
+**Files used in this step:**
 
-The Sentinel-1 feature files contain preprocessed SAR-derived variables, including σ⁰VH, σ⁰VV, incidence angle, water-pixel information, 
-and neighborhood backscatter statistics extracted using K-means clustering or Otsu thresholding. These files do not include the original Sentinel-1 GRD imagery.
+- `Data/Sample_Data/Station_Sample.xlsx`  
+  Contains station metadata, including station ID, station coordinates, Sentinel-1 clipping range, clipped image size, river type, and the pixel location corresponding to each monitoring station.
 
-In this step, station ID is used to link spatial information, while date-time information is used to synchronize Sentinel-1 
-acquisition times with the corresponding ground-based water level records. 
+- `Data/Sample_Data/Water_level_sample.xlsx`  
+  Contains sample ground-based water level observations, including station ID, observation date-time, and water level.
 
-The resulting station-specific time series dataset can then be used in the subsequent LSTM-based water level estimation workflow.
+- `Data/Sample_Data/Sentinel1_Features_Sample_K_means_Clustering.xlsx`  
+  Contains sample preprocessed Sentinel-1 SAR-derived features extracted using K-means clustering, including σ⁰VH, σ⁰VV, incidence angle, water-pixel information, and neighborhood backscatter statistics.
+
+- `Data/Sample_Data/Sentinel1_Features_Sample_Otsu_Thresholding.xlsx`  
+  Contains sample preprocessed Sentinel-1 SAR-derived features extracted using Otsu thresholding, including SAR backscatter-based water-pixel information and related feature values.
+
+In this step, station ID is used to link station-based spatial information, while date-time information is used to synchronize Sentinel-1 acquisition times with the corresponding ground-based water level records. The resulting station-specific time series dataset can be used in the subsequent LSTM-based water level estimation workflow.
+
+The Sentinel-1 feature files do not include the original Sentinel-1 GRD imagery. Instead, they provide sample-format variables extracted after preprocessing and water body detection.
