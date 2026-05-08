@@ -9,12 +9,6 @@
 % using pre-synchronized Sentinel-1-derived input variables and an
 % LSTM-based model.
 %
-% Note:
-% This is a simplified tutorial example. It does not reproduce the full
-% project-specific implementation, full temporal matching process,
-% hyperparameter search, SHAP analysis, or station-wise batch processing
-% used in the associated study.
-%
 % The sample Sentinel-1 feature file is assumed to have already been
 % temporally matched with the corresponding ground-based water level
 % observations.
