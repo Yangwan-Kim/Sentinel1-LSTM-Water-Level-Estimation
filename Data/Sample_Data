@@ -1,0 +1,14 @@
+# Sample Data Description
+
+This folder contains sample-format datasets for the tutorial-style MATLAB workflow.
+
+The full project-specific datasets are not included due to data-sharing restrictions. The provided files are intended to demonstrate the required data structure and input format.
+
+## Files
+
+- `Station_Sample.xlsx`: Station metadata, including station coordinates, Sentinel-1 clipping ranges, clipped image size, station ID, and river type.
+- `Water_level_sample.xlsx`: Sample ground-based water level observations.
+- `Sentinel1_Features_Sample_K_means_Clustering.xlsx`: Sample Sentinel-1-derived features extracted using K-means clustering.
+- `Sentinel1_Features_Sample_Otsu_Thresholding.xlsx`: Sample Sentinel-1-derived features extracted using Otsu thresholding.
+
+Users can replace these sample files with their own station metadata, Sentinel-1-derived features, and water level observations.
