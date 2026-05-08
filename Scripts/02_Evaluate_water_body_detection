@@ -1,4 +1,4 @@
-### 02_Evaluate_water_body_detection.m
+### 02_Evaluate_water_body_detection
 
 This script demonstrates the evaluation step for Sentinel-1-derived water body detection results. In the associated study, 
 two water body detection approaches were used: K-means clustering and Otsu thresholding.
