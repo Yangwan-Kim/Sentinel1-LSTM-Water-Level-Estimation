@@ -1,4 +1,4 @@
-### 01_Load_sample_data.m
+### 01_Load_sample_data
 
 This script demonstrates the first step of the tutorial workflow: loading and integrating the sample datasets required for Sentinel-1 and LSTM-based water level estimation. 
 The purpose of this step is to organize station metadata, ground-based water level observations, and preprocessed Sentinel-1 SAR-derived features into a consistent structure for subsequent analysis.
