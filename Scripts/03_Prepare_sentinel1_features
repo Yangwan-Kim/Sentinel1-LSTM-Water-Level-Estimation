@@ -1,1 +1,9 @@
+### 03_Prepare_sentinel1_features
 
+This MATLAB tutorial script demonstrates how preprocessed Sentinel-1 SAR-derived features are prepared for LSTM-based water level estimation.
+
+In the associated study, Sentinel-1-derived variables extracted from detected water pixels were used as input features, including σ⁰VH, σ⁰VV, incidence angle, and Day of Year (DOY). 
+Ground-based water level observations were used as the target variable.
+
+This script illustrates how the final preprocessed Sentinel-1 feature files are loaded, how key input variables are selected, and how they are synchronized with ground-based 
+water level observations using station ID and date-time information. The resulting table represents a model-ready dataset for subsequent LSTM-based water level estimation.
