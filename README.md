@@ -36,7 +36,7 @@ Data/
   Sentinel1_Features_Sample_Otsu_Thresholding.xlsx
 
 Scripts/
-  01_Load_sample_data.m
-  02_Prepare_sentinel1_features.m
-  03_Evaluate_water_body_detection.m
-  04_Evaluate_water_level_estimation.m
+  01_Load_sample_data
+  02_Evaluate_water_body_detection.m
+  03_Prepare_sentinel1_features
+  04_Evaluate_water_level_estimation
