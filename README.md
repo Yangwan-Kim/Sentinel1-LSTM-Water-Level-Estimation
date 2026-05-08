@@ -37,6 +37,6 @@ Data/
 
 Scripts/
   01_Load_sample_data
-  02_Evaluate_water_body_detection.m
+  02_Evaluate_water_body_detection
   03_Prepare_sentinel1_features
   04_Evaluate_water_level_estimation
