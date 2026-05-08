@@ -18,8 +18,8 @@ The tutorial covers the following steps:
 
 The example workflow uses the following input variables:
 
-- Sentinel-1 SAR-derived σ⁰VH
-- Sentinel-1 SAR-derived σ⁰VV
+- Sentinel-1 SAR-derived VH Backscatter [dB]
+- Sentinel-1 SAR-derived VV Backscatter [dB]
 - Incidence angle
 - Day of Year (DOY)
 
@@ -28,22 +28,15 @@ The target variable is ground-based water level observation.
 ## Repository Structure
 
 ```text
-data/
-  sample/
-    station_metadata_sample.csv
-    sentinel1_features_sample.csv
-    water_level_sample.csv
+Data/
+  Sample_Data/
+    Station_Sample.xlsx
+    Water_level_sample.xlsx
+    Sentinel1_Features_Sample_K_means_Clustering.xlsx
+    Sentinel1_Features_Sample_Otsu_Thresholding.xlsx
 
 scripts/
   01_prepare_input_data.m
   02_train_lstm_model.m
   03_evaluate_model.m
   04_visualize_results.m
-
-functions/
-  createSequences.m
-  calculateMetrics.m
-  plotPredictions.m
-
-outputs/
-  example_results/
