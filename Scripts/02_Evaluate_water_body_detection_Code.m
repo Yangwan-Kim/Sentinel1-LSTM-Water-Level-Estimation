@@ -1,31 +1,26 @@
 %% 02_Evaluate_water_body_detection.m
-% Tutorial script for evaluating Sentinel-1-derived water body detection.
+% Tutorial script for water body detection and evaluation using Sentinel-1 SAR.
 %
 % Programming environment:
 %   This tutorial is implemented in MATLAB, not Python.
 %
-% In the associated study, two water body detection approaches were used:
-% 1) K-means clustering
-% 2) Otsu thresholding
+% Purpose:
+%   This script provides a simplified tutorial example of how Sentinel-1-derived
+%   water body detection results can be evaluated using confusion matrix-based
+%   metrics.
 %
-% The full Sentinel-1 water body extraction workflow is not included in
-% this tutorial. Instead, this script uses final preprocessed output files
-% generated from each method and demonstrates how water body detection
-% results can be evaluated using confusion matrix-based metrics.
+%   In the associated study, two water body detection approaches were used:
+%     1) K-means clustering
+%     2) Otsu thresholding
 %
-% K-means workflow summary:
-% - Sentinel-1 VH and VV backscatter images are clipped around each station.
-% - The optimal number of clusters is determined using silhouette analysis.
-% - K-means clustering is applied to classify SAR backscatter patterns.
-% - Water-related pixels are identified and used to extract feature values.
-%
-% Otsu workflow summary:
-% - Sentinel-1 VH and VV backscatter images are clipped around each station.
-% - Automatic thresholding is applied to separate water and non-water pixels.
-% - Water-related pixels are identified and summarized as feature values.
-%
-% This script is intended as a tutorial example, not the full
-% project-specific implementation.
+% Note:
+%   This script does not reproduce the full project-specific workflow.
+%   The original Sentinel-1 GRD preprocessing, station-wise clipping,
+%   annual water body map generation, and ESA WorldCover raster comparison
+%   are not included. Instead, this tutorial uses simplified example arrays
+%   and final preprocessed sample outputs to demonstrate the main logic.
+
+clc; clear; close all;
 
 %% 1. Set data directory
 
@@ -41,9 +36,12 @@ otsuFile = fullfile(dataDir, ...
 
 % These files are final preprocessed outputs generated from the K-means
 % clustering and Otsu thresholding workflows.
+%
+% They are provided as sample-format outputs, not as original Sentinel-1
+% GRD imagery.
 
 kmeansOutput = readtable(kmeansFile);
-otsuOutput = readtable(otsuFile);
+otsuOutput   = readtable(otsuFile);
 
 disp("K-means final preprocessed output:");
 disp(head(kmeansOutput));
@@ -51,77 +49,118 @@ disp(head(kmeansOutput));
 disp("Otsu final preprocessed output:");
 disp(head(otsuOutput));
 
-%% 3. Check available variables
+%% 3. Simplified K-means water body detection example
 
-% The K-means output may include:
-% - acquisition datetime
-% - water VH/VV backscatter values
-% - incidence angle
-% - water-pixel count
-% - water-pixel location
-% - neighborhood mean backscatter statistics
-% - optimal number of clusters
+% In the full workflow, Sentinel-1 VH and VV backscatter images were clipped
+% around each monitoring station. The optimal number of clusters was selected
+% using silhouette analysis, and K-means clustering was applied to identify
+% water-related pixels.
 %
-% The Otsu output may include:
-% - acquisition datetime
-% - water-pixel count
-% - water-pixel location
-% - threshold-based water body detection information
-% - related SAR-derived feature values
+% Here, small example VH and VV arrays are used only to demonstrate the
+% conceptual logic.
 
-disp("Variables in K-means output:");
-disp(kmeansOutput.Properties.VariableNames');
+VH = [-21 -20 -19 -10 -9;
+      -22 -21 -20 -11 -10;
+      -23 -22 -21 -12 -11;
+      -20 -19 -18 -9  -8];
 
-disp("Variables in Otsu output:");
-disp(otsuOutput.Properties.VariableNames');
+VV = [-15 -14 -13 -7 -6;
+      -16 -15 -14 -8 -7;
+      -17 -16 -15 -9 -8;
+      -14 -13 -12 -6 -5];
 
-%% 4. Tutorial example of confusion matrix-based evaluation
+% Combine VH and VV backscatter values as input features.
+X = [VH(:), VV(:)];
 
-% In the full study, annual Sentinel-1-derived water body maps from each
-% method were compared with ESA WorldCover reference water body data.
+% Apply K-means clustering.
+% In the full workflow, K was determined using silhouette analysis.
+K = 2;
+idx = kmeans(X, K, "Distance", "cityblock", "Replicates", 5);
+
+% Reshape cluster labels back to image format.
+kmeansLabelMap = reshape(idx, size(VH));
+
+% In this simplified example, the cluster with the lowest mean VH backscatter
+% is assumed to represent water because open water generally has low SAR
+% backscatter.
+meanVH = zeros(K,1);
+
+for k = 1:K
+    meanVH(k) = mean(VH(kmeansLabelMap == k), "all");
+end
+
+[~, waterCluster] = min(meanVH);
+
+kmeansWaterMap = zeros(size(VH));
+kmeansWaterMap(kmeansLabelMap == waterCluster) = 1;
+
+disp("Simplified K-means water map:");
+disp(kmeansWaterMap);
+
+%% 4. Simplified Otsu thresholding water body detection example
+
+% In the full workflow, Otsu thresholding was applied to station-clipped
+% Sentinel-1 VH and VV backscatter images. Pixels classified as the lowest
+% backscatter class in both VH and VV were treated as water-related pixels.
 %
-% Both datasets were binarized:
+% Here, the same example VH and VV arrays are used to demonstrate the logic.
+
+numThresholds = 1;
+
+level_VH = multithresh(VH, numThresholds);
+level_VV = multithresh(VV, numThresholds);
+
+label_VH = imquantize(VH, level_VH);
+label_VV = imquantize(VV, level_VV);
+
+otsuWaterMap = zeros(size(VH));
+otsuWaterMap(label_VH == 1 & label_VV == 1) = 1;
+
+disp("Simplified Otsu water map:");
+disp(otsuWaterMap);
+
+%% 5. Confusion matrix-based evaluation
+
+% In the full study, annual Sentinel-1-derived binary water maps were
+% compared with ESA WorldCover reference water body data.
+%
+% Here, a simplified reference map is used to demonstrate the metric
+% calculation.
+%
 % 1 = water
 % 0 = non-water
-%
-% Here, simplified binary vectors are used to demonstrate the calculation
-% of evaluation metrics.
 
-referenceWater = [1 1 1 0 0 0 1 1 0 0]';
-
-kmeansWater = [1 1 0 0 0 1 1 1 0 0]';
-otsuWater = [1 0 0 0 0 0 1 1 0 1]';
-
-%% 5. Calculate metrics for K-means and Otsu
+referenceWaterMap = [1 1 1 0 0;
+                     1 1 1 0 0;
+                     1 1 1 0 0;
+                     1 1 1 0 0];
 
 methods = ["K-means"; "Otsu"];
-predictedWater = {kmeansWater, otsuWater};
+predictedMaps = {kmeansWaterMap, otsuWaterMap};
 
-Accuracy = zeros(2,1);
+Accuracy  = zeros(2,1);
 Precision = zeros(2,1);
-Recall = zeros(2,1);
-FAR = zeros(2,1);
-F1_score = zeros(2,1);
+Recall    = zeros(2,1);
+FAR       = zeros(2,1);
+F1_score  = zeros(2,1);
 
 for i = 1:numel(methods)
 
-    pred = predictedWater{i};
-    ref = referenceWater;
+    pred = predictedMaps{i};
+    ref  = referenceWaterMap;
 
-    TP = sum(pred == 1 & ref == 1);
-    TN = sum(pred == 0 & ref == 0);
-    FP = sum(pred == 1 & ref == 0);
-    FN = sum(pred == 0 & ref == 1);
+    TP = sum(pred == 1 & ref == 1, "all");
+    TN = sum(pred == 0 & ref == 0, "all");
+    FP = sum(pred == 1 & ref == 0, "all");
+    FN = sum(pred == 0 & ref == 1, "all");
 
-    Accuracy(i) = (TP + TN) / (TP + TN + FP + FN);
+    Accuracy(i)  = (TP + TN) / (TP + TN + FP + FN);
     Precision(i) = TP / (TP + FP);
-    Recall(i) = TP / (TP + FN);
-    FAR(i) = FP / (FP + TN);
-    F1_score(i) = 2 * Precision(i) * Recall(i) / ...
+    Recall(i)    = TP / (TP + FN);
+    FAR(i)       = FP / (FP + TN);
+    F1_score(i)  = 2 * Precision(i) * Recall(i) / ...
                    (Precision(i) + Recall(i));
 end
-
-%% 6. Display evaluation summary
 
 evaluationResults = table(methods, Accuracy, Precision, Recall, FAR, F1_score);
 
