@@ -1,14 +1,62 @@
 # Sample Data Description
 
-This folder contains sample-format datasets for the tutorial-style MATLAB workflow.
+This folder contains sample-format datasets for the tutorial-style MATLAB workflow associated with the study “Sentinel-1 and LSTM-based Water Level Estimation in a Regulated River Basin.”
 
-The full project-specific datasets are not included due to data-sharing restrictions. The provided files are intended to demonstrate the required data structure and input format.
+The full project-specific datasets are not included due to data-sharing restrictions. The provided files are intended to demonstrate the required data structure and input format for applying the workflow to other monitoring stations or study areas.
 
 ## Files
 
-- `Station_Sample.xlsx`: Station metadata, including station coordinates, Sentinel-1 clipping ranges, clipped image size, station ID, and river type.
-- `Water_level_sample.xlsx`: Sample ground-based water level observations.
-- `Sentinel1_Features_Sample_K_means_Clustering.xlsx`: Sample Sentinel-1-derived features extracted using K-means clustering.
-- `Sentinel1_Features_Sample_Otsu_Thresholding.xlsx`: Sample Sentinel-1-derived features extracted using Otsu thresholding.
+- `Station_Sample.xlsx`: Station metadata, including station coordinates, Sentinel-1 image clipping ranges, clipped image size, station ID, and river type.
+- `Water_level_sample.xlsx`: Sample ground-based water level observations, including station ID, observation date and time, and water level.
+- `Sentinel1_Features_Sample_K_means_Clustering.xlsx`: Sample Sentinel-1-derived input features extracted using K-means clustering.
+- `Sentinel1_Features_Sample_Otsu_Thresholding.xlsx`: Sample Sentinel-1-derived input features extracted using Otsu thresholding.
 
-Users can replace these sample files with their own station metadata, Sentinel-1-derived features, and water level observations.
+## Station Information
+
+The station metadata file provides basic information for each monitoring station used in the tutorial workflow. It includes the station location, station ID, river type, and the spatial clipping range used to extract Sentinel-1 SAR data around each station.
+
+The clipping range defines the latitude and longitude boundaries used to crop Sentinel-1 imagery around a monitoring station. The clipped image size represents the number of pixels in the row and column directions after spatial extraction. The row and column indices indicate the pixel location corresponding to the monitoring station within the clipped Sentinel-1 image.
+
+## Sentinel-1 SAR Data Collection
+
+Sentinel-1 C-band Synthetic Aperture Radar (SAR) Ground Range Detected (GRD) data were used to extract SAR-based input variables. The workflow uses Sentinel-1 observations acquired in Interferometric Wide Swath (IW) mode, including VV and VH polarization backscatter coefficients and incidence angle information.
+
+The original Sentinel-1 imagery is not included in this repository. Users should download Sentinel-1 GRD data for their own study area and preprocess the images before applying the feature extraction workflow.
+
+## Sentinel-1 Preprocessing
+
+Before feature extraction, Sentinel-1 SAR images should be preprocessed to reduce noise and geometric distortions. The general preprocessing workflow includes:
+
+1. Thermal noise removal 
+2. Radiometric calibration 
+3. Speckle filtering 
+4. Terrain correction 
+5. Extraction of VH backscatter, VV backscatter, and incidence angle 
+6. Spatial clipping around each monitoring station 
+
+In the associated study, a 5 × 5 Lee filter was applied for speckle filtering, and SRTM 3-arc second data were used for terrain correction. After preprocessing, the clipped Sentinel-1 images were used to extract station-based SAR features.
+
+## Water Body Detection and Feature Extraction
+
+Two water body detection methods are represented in the sample files:
+
+1. K-means clustering 
+2. Otsu thresholding 
+
+For the K-means clustering workflow, VH and VV backscatter values were used to classify water and non-water pixels. The optimal number of clusters was determined using silhouette analysis. The cluster corresponding to the monitoring station pixel was then used to extract water-related SAR features.
+
+For the Otsu thresholding workflow, an automatic thresholding approach was used to separate water and non-water pixels based on SAR backscatter characteristics.
+
+The extracted Sentinel-1 features include water-pixel backscatter values, local incidence angle, clipped image size, water-pixel location, neighborhood mean values, and method-specific information such as the optimal number of clusters for K-means or threshold values for Otsu.
+
+## Water Level Data
+
+The water level sample file provides ground-based water level observations used as the target variable in the LSTM model. The sample file includes the station ID, observation date and time, and water level value.
+
+Users can replace this file with their own water level observations, provided that the date-time format and station ID are consistent with the Sentinel-1 feature files.
+
+## Notes
+
+The original Sentinel-1 imagery and full water level datasets are not included. Users should preprocess Sentinel-1 data for their own study area and organize the extracted features following the sample file structure provided here.
+
+These sample files are provided for tutorial and reproducibility purposes only.
