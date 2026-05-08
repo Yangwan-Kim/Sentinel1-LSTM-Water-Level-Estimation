@@ -1,21 +1,30 @@
 ### 01_Load_sample_data.m
 
-This script demonstrates the initial data integration step of the tutorial workflow. It loads station metadata, ground-based water level observations, and preprocessed Sentinel-1 SAR-derived feature files, and shows how these datasets are linked using spatial and temporal information.
+This script demonstrates the first step of the tutorial workflow: loading and integrating the sample datasets required for Sentinel-1 and LSTM-based water level estimation. 
+The purpose of this step is to organize station metadata, ground-based water level observations, and preprocessed Sentinel-1 SAR-derived features into a consistent structure for subsequent analysis.
 
-**Files used in this step:**
+#### Files used in this step
 
 - `Data/Sample_Data/Station_Sample.xlsx`  
-  Contains station metadata, including station ID, station coordinates, Sentinel-1 clipping range, clipped image size, river type, and the pixel location corresponding to each monitoring station.
+  Contains monitoring station metadata, including station ID, station coordinates, river type, Sentinel-1 clipping range, clipped image size, and the pixel location corresponding to each station within the clipped Sentinel-1 image.
 
 - `Data/Sample_Data/Water_level_sample.xlsx`  
-  Contains sample ground-based water level observations, including station ID, observation date-time, and water level.
+  Contains sample ground-based water level observations, including station ID, observation date-time, and water level values.
 
-- `Data/Sample_Data/Sentinel1_Features_Sample_K_means_Clustering.xlsx`  
-  Contains sample preprocessed Sentinel-1 SAR-derived features extracted using K-means clustering, including σ⁰VH, σ⁰VV, incidence angle, water-pixel information, and neighborhood backscatter statistics.
+#### Methodological purpose
 
-- `Data/Sample_Data/Sentinel1_Features_Sample_Otsu_Thresholding.xlsx`  
-  Contains sample preprocessed Sentinel-1 SAR-derived features extracted using Otsu thresholding, including SAR backscatter-based water-pixel information and related feature values.
+The station metadata are used to define the spatial context of each monitoring site. This includes the geographic location of the station, the latitude and longitude range used to clip Sentinel-1 imagery, 
+the size of the clipped image, and the row–column pixel index corresponding to the station location.
 
-In this step, station ID is used to link station-based spatial information, while date-time information is used to synchronize Sentinel-1 acquisition times with the corresponding ground-based water level records. The resulting station-specific time series dataset can be used in the subsequent LSTM-based water level estimation workflow.
+The water level observations are used as the ground-based target variable for the LSTM model. These records are organized by station ID and observation date-time.
+The Sentinel-1 feature files provide preprocessed SAR-derived variables rather than original Sentinel-1 GRD imagery. The original SAR images are not included in this repository. 
 
-The Sentinel-1 feature files do not include the original Sentinel-1 GRD imagery. Instead, they provide sample-format variables extracted after preprocessing and water body detection.
+Instead, these sample files represent feature values extracted after preprocessing steps such as thermal noise removal, radiometric calibration, speckle filtering, terrain correction, 
+station-based clipping, and water body detection.
+
+In this step, station ID is used to link station-based spatial information with the corresponding water level and Sentinel-1 feature records. 
+
+Date-time information is then used to synchronize Sentinel-1 acquisition times with ground-based water level observations. 
+Because Sentinel-1 observations are acquired less frequently than hourly water level measurements, the workflow illustrates how SAR acquisition times can be matched with corresponding or nearest available water level records.
+
+The resulting station-specific dataset provides the basic time series structure required for the subsequent workflow, including Sentinel-1 feature preparation, water body detection evaluation, and LSTM-based water level estimation.
